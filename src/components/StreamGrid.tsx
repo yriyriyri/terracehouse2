@@ -34,14 +34,13 @@ export default function StreamGrid() {
   );
 
   return (
-    <div style={{ alignSelf: "start", display: "inline-block" }}>
+    <div style={{ alignSelf: "start", display: "inline-block", width: "clamp(100%, 55vw, 600px)",}}>
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
           gridTemplateRows: "repeat(2, 1fr)",
           gap: 2,
-          width: "clamp(55vw, 100vw, 600px)",
           aspectRatio: "4 / 3",
           height: "auto",
         }}

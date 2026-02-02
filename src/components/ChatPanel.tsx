@@ -107,6 +107,7 @@ export default function ChatPanel() {
             lineHeight: 1.45,
             color: "rgba(255,255,255,0.72)",
             minHeight: 0,
+            textAlign: "right",
           }}
         >
           {sorted.map((m) => (
