@@ -34,26 +34,24 @@ export default function StreamGrid() {
   );
 
   return (
-    <div>
-      <div className="frame">
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gridTemplateRows: "repeat(2, 1fr)",
-            gap: 6,
-            width: "100%",
-            aspectRatio: "16 / 9",
-            minHeight: 520,
-          }}
-        >
-          {streams.map((s) => (
-            <HlsTile key={s.key} src={s.src} label={s.label} />
-          ))}
-        </div>
-      </div>
-
-      <div className="statusBar">{STATUS_TOKEN_DEFAULT}</div>
+    <div style={{ alignSelf: "start", display: "inline-block" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gridTemplateRows: "repeat(2, 1fr)",
+          gap: 2,
+          height: "90vh",
+          maxHeight: 635,
+          aspectRatio: "4 / 3",
+          width: "auto",
+        }}
+      >
+        {streams.map((s) => (
+          <HlsTile key={s.key} src={s.src} />
+        ))}
+      </div>  
+    <div className="statusBar">{STATUS_TOKEN_DEFAULT}</div>
     </div>
   );
 }

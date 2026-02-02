@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import useChat, { ChatMessage } from "@/lib/useChat";
 
 function formatTime(ts: number) {
@@ -36,7 +37,6 @@ export default function ChatPanel() {
   const [lockedToBottom, setLockedToBottom] = useState(true);
 
   const sorted = useMemo(() => {
-    // messages already chronological, but keep safe:
     return [...messages].sort((a, b) => a.ts - b.ts);
   }, [messages]);
 
@@ -73,13 +73,14 @@ export default function ChatPanel() {
     >
       <div
         style={{
-          padding: 16,
-          background: "rgba(0,0,0,0.12)",
-          borderRadius: 6,
-          overflow: "hidden",
+          padding: 0,
+          background: "transparent",
+          borderRadius: 0,
+          overflow: "visible",
           display: "grid",
           gridTemplateRows: "auto 1fr",
           gap: 10,
+          minHeight: 0, 
         }}
       >
         <div
@@ -105,6 +106,7 @@ export default function ChatPanel() {
             fontSize: 12,
             lineHeight: 1.45,
             color: "rgba(255,255,255,0.72)",
+            minHeight: 0,
           }}
         >
           {sorted.map((m) => (
@@ -115,29 +117,30 @@ export default function ChatPanel() {
 
       <div
         style={{
-          background: "rgba(0,0,0,0.14)",
-          borderRadius: 6,
-          padding: 10,
+          background: "#6F6F6F",
+          borderRadius: 0,
+          padding: 0,
           display: "grid",
-          gridTemplateColumns: "1fr auto",
-          gap: 10,
+          gridTemplateColumns: "1fr 44px",
           alignItems: "center",
+          height: 44,
         }}
       >
         <input
+          className="chatInput"
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") onSend();
           }}
-          placeholder="write something..."
+          placeholder="say something"
           style={{
             width: "100%",
-            height: 40,
-            borderRadius: 6,
-            border: "1px solid rgba(0,0,0,0.35)",
-            background: "rgba(255,255,255,0.08)",
-            color: "rgba(255,255,255,0.85)",
+            height: "100%",
+            border: "none",
+            borderRadius: 0,
+            background: "transparent",
+            color: "rgba(255,255,255,0.9)",
             outline: "none",
             padding: "0 12px",
             fontSize: 13,
@@ -147,19 +150,19 @@ export default function ChatPanel() {
         <button
           onClick={onSend}
           style={{
-            height: 40,
+            height: "100%",
             width: 44,
-            borderRadius: 6,
-            border: "1px solid rgba(0,0,0,0.35)",
-            background: "rgba(255,255,255,0.10)",
-            color: "rgba(255,255,255,0.8)",
+            border: "none",
+            borderRadius: 0,
+            background: "transparent",
             cursor: "pointer",
-            fontSize: 18,
+            display: "grid",
+            placeItems: "center",
           }}
           aria-label="send"
           title="send"
         >
-          🙂
+          <Image src="/smiley.svg" alt="send" width={18} height={18} />
         </button>
       </div>
     </aside>
