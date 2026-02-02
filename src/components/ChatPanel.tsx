@@ -179,10 +179,14 @@ export default function ChatPanel() {
 function ChatLine({ m }: { m: ChatMessage }) {
   return (
     <div style={{ marginBottom: 6 }}>
-      <span style={{ color: "rgba(255,255,255,0.75)" }}>{m.ip}: </span>
-      <span style={{ color: "rgba(255,255,255,0.85)" }}>{renderTextWithLinks(m.text)} </span>
-      <span style={{ marginLeft: 8, color: "rgba(255,255,255,0.75)" }}>
-        {formatTime(m.ts)}
+      <span style={{ color: "rgba(255,255,255,0.75)" }}>
+        {formatTime(m.ts)}{" "}
+      </span>
+      <span style={{ color: "rgba(255,255,255,0.85)" }}>
+        {renderTextWithLinks(m.text)}{" "}
+      </span>
+      <span style={{ color: "rgba(255,255,255,0.75)" }}>
+        :{m.ip}
       </span>
     </div>
   );
