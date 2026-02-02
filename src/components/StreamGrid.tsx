@@ -4,7 +4,7 @@ import HlsTile from "@/components/HlsTile";
 import { useMemo } from "react";
 
 const STATUS_TOKEN_DEFAULT =
-  "1HQ3Go3ggs8pFnXuHVHRytPcq5fGG8Hbhx";
+  "bc1qc09c2tsyw9rj5ema9rsvk3e7acr8dasagn8q0d";
 
 export default function StreamGrid() {
   const streams = useMemo(
