@@ -1,66 +1,93 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import { useEffect, useRef } from "react";
+import Hls from "hls.js";
+
+type Stream = {
+  id: string;
+  src: string;
+};
+
+const streams: Stream[] = [
+  { id: "dining-room", src: "https://streams.towergroup.tv/dining-room/index.m3u8" },
+  { id: "front-area-ir", src: "https://streams.towergroup.tv/front-area-ir/index.m3u8" },
+  { id: "living-room", src: "https://streams.towergroup.tv/living-room/index.m3u8" },
+  { id: "kitchen", src: "https://streams.towergroup.tv/kitchen/index.m3u8" },
+];
+
+function HlsVideo({ src }: { src: string }) {
+  const ref = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+
+    // Safari supports HLS natively
+    if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = src;
+      return;
+    }
+
+    if (Hls.isSupported()) {
+      const hls = new Hls({
+        lowLatencyMode: false,
+        maxBufferLength: 45,
+        liveSyncDurationCount: 8,
+      });
+      hls.loadSource(src);
+      hls.attachMedia(video);
+      return () => hls.destroy();
+    }
+  }, [src]);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <video
+      ref={ref}
+      muted
+      autoPlay
+      playsInline
+      controls={false}
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        background: "black",
+      }}
+    />
+  );
+}
+
+export default function Page() {
+  return (
+    <main
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(2, 1fr)",
+        gridTemplateRows: "repeat(2, 1fr)",
+        width: "100vw",
+        height: "100vh",
+        gap: "2px",
+        background: "black",
+      }}
+    >
+      {streams.map((s) => (
+        <div key={s.id} style={{ position: "relative", width: "100%", height: "100%" }}>
+          <HlsVideo src={s.src} />
+          <div
+            style={{
+              position: "absolute",
+              left: 8,
+              bottom: 8,
+              color: "white",
+              fontSize: 12,
+              opacity: 0.7,
+              pointerEvents: "none",
+            }}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            {s.id}
+          </div>
         </div>
-      </main>
-    </div>
+      ))}
+    </main>
   );
 }
