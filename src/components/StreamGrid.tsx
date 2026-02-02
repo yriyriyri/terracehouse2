@@ -41,10 +41,9 @@ export default function StreamGrid() {
           gridTemplateColumns: "repeat(2, 1fr)",
           gridTemplateRows: "repeat(2, 1fr)",
           gap: 2,
-          height: "90vh",
-          maxHeight: 635,
+          width: "clamp(55vw, 100vw, 600px)",
           aspectRatio: "4 / 3",
-          width: "auto",
+          height: "auto",
         }}
       >
         {streams.map((s) => (

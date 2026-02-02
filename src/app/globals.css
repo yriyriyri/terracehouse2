@@ -55,7 +55,7 @@ a {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: max-content 420px;
-  column-gap: 32px;
+  column-gap: 40px;
   row-gap: 24px;          
   align-items: start;
   justify-content: start;
