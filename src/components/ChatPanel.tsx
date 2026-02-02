@@ -162,7 +162,13 @@ export default function ChatPanel() {
           aria-label="send"
           title="send"
         >
-          <Image src="/smiley.svg" alt="send" width={18} height={18} />
+          <Image
+            src="/smiley.svg"
+            alt="send"
+            width={18}
+            height={18}
+            style={{ transform: "scale(1.4)" }}
+          />
         </button>
       </div>
     </aside>
@@ -172,9 +178,9 @@ export default function ChatPanel() {
 function ChatLine({ m }: { m: ChatMessage }) {
   return (
     <div style={{ marginBottom: 6 }}>
-      <span style={{ color: "rgba(255,255,255,0.55)" }}>{m.ip}: </span>
+      <span style={{ color: "rgba(255,255,255,0.75)" }}>{m.ip}: </span>
       <span style={{ color: "rgba(255,255,255,0.85)" }}>{renderTextWithLinks(m.text)} </span>
-      <span style={{ marginLeft: 8, color: "rgba(255,255,255,0.55)" }}>
+      <span style={{ marginLeft: 8, color: "rgba(255,255,255,0.75)" }}>
         {formatTime(m.ts)}
       </span>
     </div>
