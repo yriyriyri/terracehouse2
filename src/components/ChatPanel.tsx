@@ -101,6 +101,7 @@ export default function ChatPanel() {
         <div
           ref={scrollRef}
           onScroll={onScroll}
+          className="chatScroll"
           style={{
             overflowY: "auto",
             paddingRight: 6,

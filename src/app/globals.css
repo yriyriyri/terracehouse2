@@ -140,3 +140,10 @@ a {
     font-size: 8px;
   }
 }
+
+@media (max-width: 600px) {
+  .chatScroll {
+    max-height: 35vh;
+    overflow-y: auto;
+  }
+}
