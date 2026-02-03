@@ -69,6 +69,7 @@ export default function ChatPanel() {
         display: "grid",
         gridTemplateRows: "1fr auto",
         gap: 10,
+        minHeight: 0
       }}
     >
       <div

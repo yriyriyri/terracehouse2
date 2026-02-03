@@ -35,6 +35,7 @@ a {
   grid-template-columns: minmax(720px, 1fr);
   grid-template-rows: 1fr auto;
   gap: 4px;
+  min-height: 0;
 }
 
 .chatInput::placeholder {
@@ -59,6 +60,7 @@ a {
   row-gap: 24px;          
   align-items: start;
   justify-content: start;
+  min-height: 0;
 }
 
 .mainRow > * { min-width: 0; }
