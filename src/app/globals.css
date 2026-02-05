@@ -102,7 +102,6 @@ a {
 
 .statusBar {
   margin-top: 10px;
-  transform: translateX(3px);
   width: 51%;
   height: 14px;
   margin-left: auto;
