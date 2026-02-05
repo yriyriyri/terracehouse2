@@ -1,7 +1,6 @@
 import StreamGrid from "@/components/StreamGrid";
 import ChatPanel from "@/components/ChatPanel";
-
-const MIC_HLS = "https://streams.towergroup.tv/macmini-mic/index.m3u8";
+import MicAudioToggle from "@/components/MicAudioToggle";
 
 export default function Page() {
   return (
@@ -17,16 +16,6 @@ export default function Page() {
         <source src="/bg.mp4" type="video/mp4" />
       </video>
 
-      <audio
-        autoPlay
-        controls
-        playsInline
-        preload="none"
-        crossOrigin="anonymous"
-      >
-        <source src={MIC_HLS} type="application/vnd.apple.mpegurl" />
-      </audio>
-
       <main className="page">
         <section className="mainRow">
           <StreamGrid />
@@ -35,6 +24,7 @@ export default function Page() {
 
         <footer className="titleRow">
           <div className="bigTitle">Terrace House 2</div>
+          <MicAudioToggle />
         </footer>
       </main>
     </>
