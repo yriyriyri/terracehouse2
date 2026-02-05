@@ -40,9 +40,14 @@ export default function StreamGrid() {
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
           gridTemplateRows: "repeat(2, 1fr)",
-          gap: 2,
+          gap: 4,
+          padding: 4,
           aspectRatio: "4 / 3",
           height: "auto",
+          background: "rgba(100, 100, 100, 0.35)",
+          backdropFilter: "blur(5px)",
+          WebkitBackdropFilter: "blur(5px)",
+          border: "1px solid rgba(255,255,255,0.08)",
         }}
       >
         {streams.map((s) => (

@@ -69,7 +69,11 @@ export default function ChatPanel() {
         display: "grid",
         gridTemplateRows: "1fr auto",
         gap: 10,
-        minHeight: 0
+        minHeight: 0,
+        background: "rgba(100, 100, 100, 0.35)",
+        backdropFilter: "blur(6px)",
+        WebkitBackdropFilter: "blur(6px)", 
+        border: "1px solid rgba(255,255,255,0.08)",
       }}
     >
       <div
@@ -120,7 +124,7 @@ export default function ChatPanel() {
 
       <div
         style={{
-          background: "#6F6F6F",
+          background: "rgba(100, 100, 100, 0.4)", 
           borderRadius: 0,
           padding: 0,
           display: "grid",

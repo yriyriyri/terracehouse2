@@ -82,7 +82,7 @@ export default function useChat({ url }: { url: string }) {
           setViewers(msg.count);
           return;
         }
-        
+
         if (msg.type === "msg") {
           setMessages((prev) => {
             if (prev.some((m) => m.id === msg.id)) return prev;

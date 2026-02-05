@@ -14,7 +14,7 @@ export default function HlsTile({ src }: { src: string }) {
         width: "100%",
         height: "100%",
         background: "black",
-        outline: "3px solid rgba(0,0,0,0.9)",
+        outline: "3px solid rgba(0,0,0,0.0)",
       }}
     >
       <video
