@@ -37,11 +37,6 @@ export default function StreamGrid() {
   const streams = useMemo(
     () => [
       {
-        key: "front-area-ir",
-        label: "Front Area",
-        src: "https://streams.towergroup.tv/front-area-ir/index.m3u8",
-      },
-      {
         key: "dining-room",
         label: "Dining Room",
         src: "https://streams.towergroup.tv/dining-room/index.m3u8",
@@ -65,6 +60,11 @@ export default function StreamGrid() {
         key: "downstairs",
         label: "Downstairs",
         src: "https://streams.towergroup.tv/downstairs/index.m3u8",
+      },
+      {
+        key: "front-area-ir",
+        label: "Front Area",
+        src: "https://streams.towergroup.tv/front-area-ir/index.m3u8",
       },
       {
         key: "tv",
