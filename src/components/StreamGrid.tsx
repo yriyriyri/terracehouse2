@@ -52,6 +52,11 @@ export default function StreamGrid() {
         src: "https://streams.towergroup.tv/living-room/index.m3u8",
       },
       {
+        key: "front-area-ir",
+        label: "Front Area",
+        src: "https://streams.towergroup.tv/front-area-ir/index.m3u8",
+      },
+      {
         key: "upstairs",
         label: "Upstairs",
         src: "https://streams.towergroup.tv/upstairs/index.m3u8",
@@ -60,11 +65,6 @@ export default function StreamGrid() {
         key: "downstairs",
         label: "Downstairs",
         src: "https://streams.towergroup.tv/downstairs/index.m3u8",
-      },
-      {
-        key: "front-area-ir",
-        label: "Front Area",
-        src: "https://streams.towergroup.tv/front-area-ir/index.m3u8",
       },
       {
         key: "tv",
