@@ -1,39 +1,52 @@
 "use client";
 
 import HlsTile from "@/components/HlsTile";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const STATUS_TOKEN_DEFAULT =
   "bc1qc09c2tsyw9rj5ema9rsvk3e7acr8dasagn8q0d";
 
-  function EmptyTile() {
-    return (
-      <div
+function EmptyTile() {
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        backdropFilter: "blur(1px)",
+        WebkitBackdropFilter: "blur(1px)",
+        border: "1px solid rgba(255,255,255,0.08)",
+      }}
+    >
+      <span
         style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          backdropFilter: "blur(1px)",
-          WebkitBackdropFilter: "blur(1px)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          fontSize: "13px",
+          color: "rgba(255, 255, 255, 0.8)",
         }}
       >
-        <span
-          style={{
-            fontSize: "13px",
-            color: "rgba(255, 255, 255, 0.8)",
-          }}
-        >
-          Donate for more cameras!
-        </span>
-      </div>
-    );
-  }
+        Donate for more cameras!
+      </span>
+    </div>
+  );
+}
 
 export default function StreamGrid() {
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSelectedKey(null);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
   const streams = useMemo(
     () => [
       {
@@ -87,6 +100,7 @@ export default function StreamGrid() {
     >
       <div
         style={{
+          position: "relative",
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
           gridTemplateRows: "repeat(3, 1fr)",
@@ -100,14 +114,35 @@ export default function StreamGrid() {
           border: "1px solid rgba(255,255,255,0.08)",
         }}
       >
-        {streams.map((s, i) =>
-          s ? (
-            <HlsTile key={s.key} src={s.src} />
-          ) : (
-            <EmptyTile key={`empty-${i}`} />
-          )
-        )}
+        {streams.map((s, i) => {
+          if (!s) return <EmptyTile key={`empty-${i}`} />;
+
+          const isSelected = selectedKey === s.key;
+          const someSelected = selectedKey !== null;
+          const isOtherTile = someSelected && !isSelected;
+
+          return (
+            <div
+              key={s.key}
+              onClick={() => setSelectedKey(isSelected ? null : s.key)}
+              style={{
+                width: isSelected ? "calc(100% - 8px)" : "100%",
+                height: isSelected ? "calc(100% - 8px)" : "100%",
+                cursor: "pointer",
+                position: isSelected ? "absolute" : "relative",
+                top: isSelected ? 4 : undefined,
+                left: isSelected ? 4 : undefined,
+                zIndex: isSelected ? 20 : 1,
+                opacity: isOtherTile ? 0 : 1,
+                pointerEvents: isOtherTile ? "none" : "auto",
+              }}
+            >
+              <HlsTile src={s.src} />
+            </div>
+          );
+        })}
       </div>
+
       <div className="statusBar">{STATUS_TOKEN_DEFAULT}</div>
     </div>
   );
