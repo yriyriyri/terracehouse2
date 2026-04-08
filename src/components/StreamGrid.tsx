@@ -50,9 +50,9 @@ export default function StreamGrid() {
   const streams = useMemo(
     () => [
       {
-        key: "dining-room",
-        label: "Dining Room",
-        src: "https://streams.towergroup.tv/dining-room/index.m3u8",
+        key: "living-room",
+        label: "Living Room",
+        src: "https://streams.towergroup.tv/living-room/index.m3u8",
       },
       {
         key: "kitchen",
@@ -60,9 +60,9 @@ export default function StreamGrid() {
         src: "https://streams.towergroup.tv/kitchen/index.m3u8",
       },
       {
-        key: "living-room",
-        label: "Living Room",
-        src: "https://streams.towergroup.tv/living-room/index.m3u8",
+        key: "dining-room",
+        label: "Dining Room",
+        src: "https://streams.towergroup.tv/dining-room/index.m3u8",
       },
       {
         key: "front-area-ir",
@@ -75,16 +75,16 @@ export default function StreamGrid() {
         src: "https://streams.towergroup.tv/upstairs/index.m3u8",
       },
       {
-        key: "downstairs",
-        label: "Downstairs",
-        src: "https://streams.towergroup.tv/downstairs/index.m3u8",
-      },
-      {
         key: "tv",
         label: "TV",
         src: "https://streams.towergroup.tv/tv/index.m3u8",
       },
       null,
+      {
+        key: "downstairs",
+        label: "Downstairs",
+        src: "https://streams.towergroup.tv/downstairs/index.m3u8",
+      },
       null,
     ],
     []
