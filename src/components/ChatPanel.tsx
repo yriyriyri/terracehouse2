@@ -4,6 +4,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import useChat, { ChatMessage } from "@/lib/useChat";
 
+const USERNAME_STORAGE_KEY = "th2-chat-username";
+const MAX_USERNAME_LEN = 32;
+
 function formatTime(ts: number) {
   const d = new Date(ts);
   const hh = String(d.getHours()).padStart(2, "0");
@@ -26,9 +29,17 @@ function renderTextWithLinks(text: string) {
   });
 }
 
+function normalizeUsername(value: string) {
+  return value.replace(/[^A-Za-z0-9_.-]/g, "").slice(0, MAX_USERNAME_LEN);
+}
+
 export default function ChatPanel() {
+  const [username, setUsername] = useState("");
+  const [draftUsername, setDraftUsername] = useState("");
+
   const { connected, viewers, messages, send } = useChat({
     url: "wss://chat.towergroup.tv/ws",
+    username,
   });
 
   const [text, setText] = useState("");
@@ -39,6 +50,22 @@ export default function ChatPanel() {
   const sorted = useMemo(() => {
     return [...messages].sort((a, b) => a.ts - b.ts);
   }, [messages]);
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem(USERNAME_STORAGE_KEY) || "";
+    const normalized = normalizeUsername(stored);
+    setUsername(normalized);
+    setDraftUsername(normalized);
+  }, []);
+
+  useEffect(() => {
+    if (username) {
+      window.localStorage.setItem(USERNAME_STORAGE_KEY, username);
+      return;
+    }
+
+    window.localStorage.removeItem(USERNAME_STORAGE_KEY);
+  }, [username]);
 
   useEffect(() => {
     if (!lockedToBottom) return;
@@ -59,6 +86,12 @@ export default function ChatPanel() {
     if (!t) return;
     send(t);
     setText("");
+  }
+
+  function commitUsername(value: string) {
+    const next = normalizeUsername(value);
+    setDraftUsername(next);
+    setUsername(next);
   }
 
   return (
@@ -91,15 +124,73 @@ export default function ChatPanel() {
         <div
           style={{
             display: "flex",
-            alignItems: "baseline",
+            alignItems: "center",
             justifyContent: "space-between",
+            paddingInline: 6,
+            minHeight: 25,
             color: "rgba(255,255,255,0.75)",
             fontSize: 12,
+            lineHeight: 1,
             letterSpacing: 0.2,
           }}
         >
-          <div>{connected ? "connected" : "connecting…"}</div>
-          <div>{typeof viewers === "number" ? `${viewers} online` : ""}</div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {connected ? (
+              <label
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                }}
+              >
+                <span>username -</span>
+                <input
+                  className="usernameInline"
+                  value={draftUsername}
+                  onChange={(e) => setDraftUsername(normalizeUsername(e.target.value))}
+                  onBlur={() => commitUsername(draftUsername)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      commitUsername(draftUsername);
+                      e.currentTarget.blur();
+                      return;
+                    }
+
+                    if (e.key === "Escape") {
+                      e.preventDefault();
+                      setDraftUsername(username);
+                      e.currentTarget.blur();
+                    }
+                  }}
+                  placeholder="anon"
+                  aria-label="username"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  style={{
+                    border: "none",
+                    background: "transparent",
+                    color: "inherit",
+                    font: "inherit",
+                    lineHeight: 1,
+                    letterSpacing: "inherit",
+                    padding: 0,
+                    margin: 0,
+                    marginLeft: "0.35ch",
+                    outline: "none",
+                    minWidth: 0,
+                    width: `${Math.max((draftUsername || "anon").length, 4)}ch`,
+                    textAlign: "left",
+                  }}
+                />
+              </label>
+            ) : (
+              "connecting…"
+            )}
+          </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {typeof viewers === "number" ? `${viewers} online` : ""}
+          </div>
         </div>
 
         <div
@@ -183,16 +274,31 @@ export default function ChatPanel() {
 }
 
 function ChatLine({ m }: { m: ChatMessage }) {
+  const username = m.username?.trim();
+  const hasUsername = Boolean(username);
+  const label = username || m.ip;
+  const ipLookupUrl = `https://whatismyipaddress.com/ip/${encodeURIComponent(m.ip)}`;
+  const labelStyle = hasUsername
+    ? { color: "rgba(255,255,255,0.7)" }
+    : { color: "rgba(255,255,255,0.45)", fontSize: 11 };
+
   return (
     <div style={{ marginBottom: 6 }}>
-      <span style={{ color: "rgba(255,255,255,0.75)" }}>
-        {formatTime(m.ts)}{" "}
-      </span>
+      <a
+        href={ipLookupUrl}
+        target="_blank"
+        rel="noreferrer"
+        style={{ ...labelStyle, textDecoration: "none" }}
+      >
+        {label}:
+      </a>
       <span style={{ color: "rgba(255,255,255,0.85)" }}>
-        {renderTextWithLinks(m.text)}{" "}
+        {" "}
+        {renderTextWithLinks(m.text)}
       </span>
-      <span style={{ color: "rgba(255,255,255,0.75)" }}>
-        :{m.ip}
+      <span style={{ color: "rgba(255,255,255,0.45)", fontSize: 11 }}>
+        {" "}
+        {formatTime(m.ts)}
       </span>
     </div>
   );

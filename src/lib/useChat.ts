@@ -3,9 +3,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export type ChatMessage = {
-  type: "msg";
+  type?: "msg";
   id: number;
   ip: string;
+  username?: string | null;
   text: string;
   ts: number;
 };
@@ -16,17 +17,43 @@ type ErrorMsg = { type: "error"; code: string; ts: number };
 
 type Incoming = HelloMsg | ChatMessage | ViewersMsg | ErrorMsg;
 
-export default function useChat({ url }: { url: string }) {
+export default function useChat({
+  url,
+  username = "",
+}: {
+  url: string;
+  username?: string;
+}) {
   const wsRef = useRef<WebSocket | null>(null);
+  const usernameRef = useRef(username);
+
+  usernameRef.current = username;
 
   const [connected, setConnected] = useState(false);
   const [viewers, setViewers] = useState<number | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
+  const sendUsername = useCallback(() => {
+    const ws = wsRef.current;
+    if (!ws || ws.readyState !== WebSocket.OPEN) return;
+    ws.send(
+      JSON.stringify({
+        type: "set_username",
+        username: usernameRef.current || "",
+      })
+    );
+  }, []);
+
   const send = useCallback((text: string) => {
     const ws = wsRef.current;
     if (!ws || ws.readyState !== WebSocket.OPEN) return;
-    ws.send(JSON.stringify({ type: "msg", text }));
+    ws.send(
+      JSON.stringify({
+        type: "msg",
+        text,
+        ...(usernameRef.current ? { username: usernameRef.current } : {}),
+      })
+    );
   }, []);
 
   useEffect(() => {
@@ -55,6 +82,7 @@ export default function useChat({ url }: { url: string }) {
         if (!alive) return;
         retry = 0;
         setConnected(true);
+        sendUsername();
       };
   
       ws.onclose = () => {
@@ -102,6 +130,10 @@ export default function useChat({ url }: { url: string }) {
       wsRef.current = null;
     };
   }, [url]);
+
+  useEffect(() => {
+    sendUsername();
+  }, [username, sendUsername]);
 
   return { connected, viewers, messages, send };
 }

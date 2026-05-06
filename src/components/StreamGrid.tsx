@@ -27,7 +27,7 @@ function EmptyTile() {
           color: "rgba(255, 255, 255, 0.8)",
         }}
       >
-        Donate for more cameras!
+        New cameras soon!
       </span>
     </div>
   );
