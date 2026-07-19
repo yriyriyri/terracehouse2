@@ -142,6 +142,53 @@ a {
   color: rgba(255,255,255,0.85);
 }
 
+.shutdownPage {
+  width: 100vw;
+  min-height: 100vh;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+}
+
+.shutdownMessage {
+  max-width: 1120px;
+  transform: translateY(14vh);
+}
+
+.shutdownTitle {
+  margin: 0;
+  max-width: 1100px;
+  font-size: 44px;
+}
+
+.shutdownBody {
+  max-width: 700px;
+  margin: 28px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+@media (max-width: 600px) {
+  .shutdownPage {
+    padding: 22px;
+  }
+
+  .shutdownBody {
+    margin-top: 20px;
+    font-size: 12px;
+  }
+
+  .shutdownTitle {
+    font-size: 30px;
+  }
+
+  .shutdownMessage {
+    transform: translateY(8vh);
+  }
+}
+
 .micLabel {
   margin-left: 18px;
   margin-bottom: 4px;
